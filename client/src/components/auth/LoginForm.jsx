@@ -7,13 +7,13 @@ import { Link } from 'react-router-dom'
 const LoginForm = () => {
   return (
     <>
-  <Form>
+  <Form className='my-3'>
 
-<FormGroup>
+<FormGroup className='my-4'>
   <Form.Control type='text' placeholder='Username' name='username' required/>
 </FormGroup>
 
-<FormGroup>
+<FormGroup className='my-4'>
   <Form.Control type='text' placeholder='Password' name='password' required/>
 </FormGroup>
 

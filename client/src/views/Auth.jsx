@@ -6,7 +6,6 @@ const Auth = ({authRoute}) => {
 
   body = (
     <>
-      Learn it
       {
       authRoute === 'login' && <LoginForm/>
       }
