@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const authRoutes = require('./routes/auth')
-
+const postRoutes = require('./routes/post')
 const PORT = 5000
 
 const app = express()
@@ -25,5 +25,5 @@ connectDB()
 
 
 app.use('/api/auth', authRoutes)
-
+app.use('/api/posts', postRoutes)
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

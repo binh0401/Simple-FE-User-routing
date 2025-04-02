@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 const router = express.Router()
 
-//Sign up
+
 //@route POST api/auth/register
 //@desc Register user
 //@access Public
@@ -50,6 +50,56 @@ router.post('/register', async(req, res) => {
   }
 })
 
+//@route POST api/auth/login
+//@desc Login
+//@access Public
+router.post('/login', async(req,res) => {
+  const {username, password} = req.body
+
+  if(!username | !password){
+    return res.status(400).json({
+      success: false,
+      message: "Missing username or password"
+    })
+  }
+
+  try {
+    //Check for existing user
+    const existingUser = await User.findOne({username})
+
+    if(!existingUser){
+      return res.status(400).json({
+        success: false,
+        message: "User not exist"
+      })
+    }
+
+    const existingPassword = existingUser.password
+
+    const passwordValid = argon2.verify(existingPassword, password)
+
+    if(!passwordValid){
+      return res.status(400).json({
+        success: false, 
+        message: 'Wrong password'
+      })
+    }
+
+    const accessToken = jwt.sign({user_id: existingUser._id}, process.env.ACCESS_TOKEN_SECRET)
+
+    return res.status(200).json({
+      success: true,
+      message: "Log in successfully",
+      accessToken
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      accessToken
+    })
+  }
+})
 
 
 module.exports = router
