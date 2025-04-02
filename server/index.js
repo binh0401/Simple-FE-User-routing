@@ -1,8 +1,13 @@
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const authRoutes = require('./routes/auth')
-const app = express()
+
 const PORT = 5000
+
+const app = express()
+app.use(express.json())
+
 
 const connectDB = async () => {
   try {
@@ -18,10 +23,6 @@ const connectDB = async () => {
 
 connectDB()
 
-
-app.get('/', (req, res) => {
-  res.send('Hello world')
-})
 
 app.use('/api/auth', authRoutes)
 
