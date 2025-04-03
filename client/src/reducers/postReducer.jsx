@@ -29,7 +29,21 @@ export const postReducer = (state, action) => {
         postLoading: false
       }
 
-    
+    case 'UPDATE_POST':
+      
+      const newPosts = state.posts.map(post => post._id === payload._id ? payload : post)
+
+      return {
+        ...state,
+        postLoading: false,
+        posts: newPosts
+      }
+
+    case 'FIND_POST':
+      return {
+        ...state,
+        post: payload
+      }
     default:
       return state
   }

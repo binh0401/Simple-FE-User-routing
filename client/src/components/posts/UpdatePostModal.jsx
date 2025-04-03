@@ -1,38 +1,25 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Modal, Button, Form, ModalHeader, ModalTitle, FormGroup, ModalBody, FormControl, FormText, ModalFooter } from "react-bootstrap"
 import { PostContext } from "../../contexts/PostContext"
 
-
-
-const AddPostModal = () => {
+const UpdatePostModal = () => {
   //Contexts
-  const {showAddPostModal, setShowAddPostModal, addPost, setShowToast} = useContext(PostContext)
+  const {showUpdatePostModal, setShowUpdatePostModal, updatePost, setShowToast, postState: {post}} = useContext(PostContext)
 
   const closeDialog = () => {
-    setNewPost(newPost => ({
-      ...newPost,
-      title: '',
-      description: '',
-      url: '',
-    }
-    )
-    )
-    setShowAddPostModal(false)
+    setShowUpdatePostModal(false)
   }
 
   //State
-  const [newPost, setNewPost] = useState({
-    title: '',
-    description: '',
-    url: '',
-    status: 'TO LEARN'
-  })
+  const [updatedPost, setUpdatedPost] = useState(post)
 
-  const {title, description, url} = newPost
+  useEffect(() => setUpdatedPost(post), [post])
+
+  const {title, description, url, status} = updatedPost
 
   const formChange = event => {
-    setNewPost(newPost => ({
-      ...newPost,
+    setUpdatedPost(updatedPost => ({
+      ...updatedPost,
       [event.target.name]: event.target.value
     }
     )
@@ -41,28 +28,20 @@ const AddPostModal = () => {
 
   const submit = async event => {
     event.preventDefault()
-
-    const {success, message} = await addPost(newPost)
-    setNewPost({
-      title: '',
-      description: '',
-      url: '',
-      status: 'TO LEARN'
-    })
-    setShowAddPostModal(false),
+    const {success, message} = await updatePost(updatedPost)
+    setShowUpdatePostModal(false),
     setShowToast({
       show: true,
       message: message,
       type: success ? 'success' : 'danger'
     })
-
   }
 
   return (
-    <Modal show={showAddPostModal} onHide={closeDialog}>
+    <Modal show={showUpdatePostModal} onHide={closeDialog}>
       <ModalHeader closeButton>
         <ModalTitle>
-          What do you want to learn?
+          Still in progress ?
         </ModalTitle>
       </ModalHeader>
       <Form onSubmit={submit}>
@@ -79,6 +58,15 @@ const AddPostModal = () => {
           <FormGroup>
             <FormControl type="text" placeholder="Youtube Tutorial URL" name="url" value={url} onChange={formChange}/>
           </FormGroup>
+
+          <FormGroup>
+            <FormControl as='select' value={status} name="status" onChange={formChange}>
+              <option value='TO LEARN'>TO LEARN</option>
+              <option value='LEARNING'>LEARNING</option>
+              <option value='LEARNED'>LEARNED</option>
+            </FormControl>
+          </FormGroup>
+
         </ModalBody>
         <ModalFooter>
           <Button variant="secondary" onClick={closeDialog}>Cancel</Button>
@@ -91,4 +79,4 @@ const AddPostModal = () => {
   )
 }
 
-export default AddPostModal
+export default UpdatePostModal

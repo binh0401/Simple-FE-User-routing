@@ -65,7 +65,7 @@ router.get('/', verifyToken, async(req,res) => {
 //@route PUT /api/posts/:id
 //@desc Update post
 //@access Private
-router.get('/:id', verifyToken, async(req,res) => {
+router.put('/:id', verifyToken, async(req,res) => {
   const {title, description, url, status} = req.body
 
   if(!title){

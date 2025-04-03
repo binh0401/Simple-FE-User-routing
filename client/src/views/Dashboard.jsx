@@ -5,11 +5,11 @@ import { AuthContext } from '../contexts/AuthContext'
 import SinglePost from '../components/posts/SinglePost'
 import AddPostModal from '../components/posts/AddPostModal'
 import addIcon from '../assets/plus-circle-fill.svg'
-
+import UpdatePostModal from '../components/posts/UpdatePostModal'
 
 const Dashboard = () => {
   const {authState: {user: {username}}} = useContext(AuthContext)
-  const {setShowToast,showToast,showAddPostModal, setShowAddPostModal,postState: {posts,postLoading}, getPosts} = useContext(PostContext)
+  const {setShowToast,showToast,showAddPostModal, setShowAddPostModal,postState: {post, posts,postLoading}, getPosts} = useContext(PostContext)
 
   //Fetch all posts
   useEffect(() => {
@@ -74,6 +74,7 @@ const Dashboard = () => {
       <h1>DASHBOARD</h1>
       {body}
       <AddPostModal/>
+      {post !== null && <UpdatePostModal /> }
       <Toast show={showToast.show} style={{position: 'fixed', top:'20%', right:'10px'}} className={`bg-${showToast.type} text-white`} onClose={() => setShowToast({show: false,message: '',type: null})} delay={3000} autohide>
         <ToastBody>
           <strong>{showToast.message}</strong>

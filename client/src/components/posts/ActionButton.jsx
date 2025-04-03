@@ -7,9 +7,13 @@ import { PostContext } from '../../contexts/PostContext'
 
 const ActionButton = ({url, _id}) => {
 
-  const {deletePost} = useContext(PostContext)
+  const {deletePost, findPost, setShowUpdatePostModal} = useContext(PostContext)
 
-  
+  const choosePost = (id) => {
+    findPost(id)
+    setShowUpdatePostModal(true)
+
+  }
 
 
   return (
@@ -18,7 +22,7 @@ const ActionButton = ({url, _id}) => {
           <img src={playIcon} alt="play" width={32} height={32}/>
       </Button>
 
-      <Button className='post-button'>
+      <Button className='post-button' onClick={() => choosePost(_id)}>
           <img src={editIcon} alt="edit" width={24} height={24}/>
       </Button>
 

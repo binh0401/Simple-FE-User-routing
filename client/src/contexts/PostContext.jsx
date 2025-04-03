@@ -8,10 +8,12 @@ export const PostContext = createContext()
 const PostContextProvider = ({children}) => {
   //State
   const [postState, dispatch] = useReducer(postReducer, {
+    post: null,
     posts: [],
     postLoading : true
   })
   const [showAddPostModal, setShowAddPostModal] = useState(false)
+  const [showUpdatePostModal, setShowUpdatePostModal] = useState(false)
   const [showToast, setShowToast] = useState({
     show: false,
     message: '',
@@ -75,9 +77,38 @@ const PostContextProvider = ({children}) => {
     }
   }
 
+  //update post
+  const updatePost = async (updatedPost) => {
+    try {
+      const response = await axios.put(`${apiUrl}/${updatedPost._id}`, updatedPost)
+      if(response.data.success){
+        dispatch({
+          type: 'UPDATE_POST',
+          payload: response.data.post
+        })
+        return response.data
+      }
 
-  
-  const postContextData = {getPosts, postState, showAddPostModal, setShowAddPostModal, addPost, showToast, setShowToast, deletePost}
+      
+    } catch (error) {
+      return error.response.data ? error.response.data : {
+        success: false,
+        message: 'Server internal error'
+      }
+    }
+  }
+
+  //find post when user clicked
+  const findPost = (id) => {
+    const post = postState.posts.find(post => post._id === id)
+    dispatch({
+      type: 'FIND_POST',
+      payload: post
+    })
+  }
+
+
+  const postContextData = { setShowUpdatePostModal, showUpdatePostModal,findPost,updatePost, getPosts, postState, showAddPostModal, setShowAddPostModal, addPost, showToast, setShowToast, deletePost}
 
   return(
     <PostContext.Provider value={postContextData}>
