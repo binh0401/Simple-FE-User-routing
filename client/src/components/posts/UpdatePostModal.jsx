@@ -6,9 +6,7 @@ const UpdatePostModal = () => {
   //Contexts
   const {showUpdatePostModal, setShowUpdatePostModal, updatePost, setShowToast, postState: {post}} = useContext(PostContext)
 
-  const closeDialog = () => {
-    setShowUpdatePostModal(false)
-  }
+ 
 
   //State
   const [updatedPost, setUpdatedPost] = useState(post)
@@ -37,6 +35,9 @@ const UpdatePostModal = () => {
     })
   }
 
+  const closeDialog = () => {
+    setShowUpdatePostModal(false)
+  }
   return (
     <Modal show={showUpdatePostModal} onHide={closeDialog}>
       <ModalHeader closeButton>
