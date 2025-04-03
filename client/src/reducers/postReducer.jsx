@@ -15,6 +15,21 @@ export const postReducer = (state, action) => {
         postLoading: false
       }
     
+    case 'ADD_POST':
+      return {
+        ...state,
+        posts: [...state.posts, payload],
+        postLoading: false
+      }
+    
+    case 'DEL_POST':
+      return {
+        ...state,
+        posts: state.posts.filter(post => post._id !== payload),
+        postLoading: false
+      }
+
+    
     default:
       return state
   }

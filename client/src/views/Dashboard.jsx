@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { PostContext } from '../contexts/PostContext'
-import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Spinner, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Spinner, Row, Col, OverlayTrigger, Tooltip, ToastBody, Toast } from 'react-bootstrap'
 import { AuthContext } from '../contexts/AuthContext'
 import SinglePost from '../components/posts/SinglePost'
 import AddPostModal from '../components/posts/AddPostModal'
@@ -9,7 +9,7 @@ import addIcon from '../assets/plus-circle-fill.svg'
 
 const Dashboard = () => {
   const {authState: {user: {username}}} = useContext(AuthContext)
-  const {showAddPostModal, setShowAddPostModal,postState: {posts,postLoading}, getPosts} = useContext(PostContext)
+  const {setShowToast,showToast,showAddPostModal, setShowAddPostModal,postState: {posts,postLoading}, getPosts} = useContext(PostContext)
 
   //Fetch all posts
   useEffect(() => {
@@ -44,7 +44,7 @@ const Dashboard = () => {
             <CardText>
               Click the button below to track your first skill
             </CardText>
-            <Button variant='primary'>LearnIt!</Button>
+            <Button variant='primary' onClick={() => setShowAddPostModal(true)}>LearnIt!</Button>
           </CardBody>
         </Card>
       </>
@@ -60,7 +60,11 @@ const Dashboard = () => {
           ))}
         </Row>
         
-        
+        <OverlayTrigger placement='left' overlay={<Tooltip>Add a new thing to learn</Tooltip>}>
+        <Button className='btn-floating' onClick={() => setShowAddPostModal(true)}>
+            <img src={addIcon} alt="add" width={60} height={60}/>
+        </Button>
+      </OverlayTrigger>
       </>
     )
   }
@@ -70,15 +74,12 @@ const Dashboard = () => {
       <h1>DASHBOARD</h1>
       {body}
       <AddPostModal/>
-      <OverlayTrigger placement='left' overlay={<Tooltip>Add a new thing to learn</Tooltip>}>
-        <Button className='btn-floating' onClick={() => setShowAddPostModal(true)}>
-            <img src={addIcon} alt="add" width={60} height={60}/>
-        </Button>
-      </OverlayTrigger>
-      
+      <Toast show={showToast.show} style={{position: 'fixed', top:'20%', right:'10px'}} className={`bg-${showToast.type} text-white`} onClose={() => setShowToast({show: false,message: '',type: null})} delay={3000} autohide>
+        <ToastBody>
+          <strong>{showToast.message}</strong>
+        </ToastBody>
+      </Toast>  
     </>
-    
-    
   )
 }
 

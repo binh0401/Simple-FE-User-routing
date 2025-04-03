@@ -12,6 +12,12 @@ const PostContextProvider = ({children}) => {
     postLoading : true
   })
   const [showAddPostModal, setShowAddPostModal] = useState(false)
+  const [showToast, setShowToast] = useState({
+    show: false,
+    message: '',
+    type: null
+  })
+
 
   //Get all posts
   const getPosts = async () => {
@@ -34,10 +40,44 @@ const PostContextProvider = ({children}) => {
     }
   }
 
+  //Add new post
+  const addPost = async (newPost) => {
+    try {
+      const response = await axios.post(`${apiUrl}/posts`,newPost)
+      if(response.data.success){
+        dispatch({
+          type: 'ADD_POST',
+          payload: response.data.post
+        })
+        return response.data
+      }
+      
+    } catch (error) {
+      return error.response.data ? error.response.data : {
+        success: false,
+        message: 'Server internal error'
+      }
+    }
+  }
+
+  //delete post
+  const deletePost = async (id)=> {
+    try {
+      const response = await axios.delete(`${apiUrl}/posts/${id}`)
+      if(response.data.success){
+        dispatch({
+          type: 'DEL_POST',
+          payload: id
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
 
-
-  const postContextData = {getPosts, postState, showAddPostModal, setShowAddPostModal}
+  
+  const postContextData = {getPosts, postState, showAddPostModal, setShowAddPostModal, addPost, showToast, setShowToast, deletePost}
 
   return(
     <PostContext.Provider value={postContextData}>

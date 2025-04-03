@@ -20,7 +20,7 @@ router.post('/', verifyToken ,async(req,res) => {
   try {
     const newPost = new Post({title,
        description,
-       url: (url.startWith('https://')) ? url : `https://${url}`, status: status || 'TO LEARN',
+       url: (url.startsWith('https://')) ? url : `https://${url}`, status: status || 'TO LEARN',
        user})
     
     await newPost.save()
@@ -32,10 +32,10 @@ router.post('/', verifyToken ,async(req,res) => {
     })
 
   } catch (error) {
+    console.log(error)
     res.json({
       success: false,
       message:'Internal server error',
-      post: newPost
     })
   }
 })
@@ -117,7 +117,7 @@ router.get('/:id', verifyToken, async(req,res) => {
 //@desc Delete post
 //@access Private 
 
-router.get('/:id', verifyToken, async(req,res) => {
+router.delete('/:id', verifyToken, async(req,res) => {
   
   try {
     const post_id = req.params.id
@@ -129,7 +129,7 @@ router.get('/:id', verifyToken, async(req,res) => {
     }
 
     const deletedPost = await Post.findOneAndDelete(deleteCondition)
-
+    console.log(deletedPost)
     if(!deletedPost){
       return res.json(401).json({
         success: false,
