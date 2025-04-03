@@ -6,11 +6,13 @@ import AuthContextProvider from './contexts/AuthContext'
 import Dashboard from './views/Dashboard'
 import ProtectedRoute from './components/routing/ProtectedRoute'
 import About from './views/About'
+import PostContextProvider from './contexts/PostContext'
 
 
 const App = () => {
   return (
     <AuthContextProvider>
+      <PostContextProvider>
       <Routes>
         <Route path='/' element={<Landing/>}/>
         <Route path='/login' element={<Auth authRoute='login'/>}/>
@@ -22,6 +24,7 @@ const App = () => {
           <Route path='/about' element={<About/>}/>
         </Route>
       </Routes>
+      </PostContextProvider>
     </AuthContextProvider>
     
 
