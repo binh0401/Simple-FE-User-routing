@@ -4,7 +4,6 @@ export const authReducer = (state, action) => {
   switch (type){
     case 'SET_AUTH':
       return {
-        ...state,
         authLoading,
         isAuthenticated,
         user

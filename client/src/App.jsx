@@ -5,6 +5,7 @@ import Auth from './views/Auth'
 import AuthContextProvider from './contexts/AuthContext'
 import Dashboard from './views/Dashboard'
 import ProtectedRoute from './components/routing/ProtectedRoute'
+import About from './views/About'
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
         {/*Protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route path='/dashboard' element={<Dashboard/>}/>
+          <Route path='/about' element={<About/>}/>
         </Route>
       </Routes>
     </AuthContextProvider>

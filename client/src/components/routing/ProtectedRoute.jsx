@@ -3,6 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 import { useContext } from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
 import { Spinner } from 'react-bootstrap'
+import NavbarMenu from '../layout/NavbarMenu'
 const ProtectedRoute = () => {
 
   const {authState: {isAuthenticated, authLoading}} = useContext(AuthContext)
@@ -14,8 +15,11 @@ const ProtectedRoute = () => {
       </div>
     )
   }
-
-  return isAuthenticated ? <Outlet/> : <Navigate to='/login' replace/>
+  let content = <><NavbarMenu />
+    <Outlet /></>
+    
+  
+  return isAuthenticated ? content : <Navigate to='/login' replace/>
   
 
   
