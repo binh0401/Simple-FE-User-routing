@@ -46,7 +46,7 @@ router.post('/', verifyToken ,async(req,res) => {
 router.get('/', verifyToken, async(req,res) => {
   try {
     const posts = await Post.find({
-      user: user_id
+      user: req.user_id
     }).populate('user', ['username'])
 
     res.json({
@@ -54,6 +54,7 @@ router.get('/', verifyToken, async(req,res) => {
       posts
     })
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       success: false,
       message: "Internal server error"
