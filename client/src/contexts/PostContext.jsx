@@ -80,7 +80,7 @@ const PostContextProvider = ({children}) => {
   //update post
   const updatePost = async (updatedPost) => {
     try {
-      const response = await axios.put(`${apiUrl}/${updatedPost._id}`, updatedPost)
+      const response = await axios.put(`${apiUrl}/posts/${updatedPost._id}`, updatedPost)
       if(response.data.success){
         dispatch({
           type: 'UPDATE_POST',

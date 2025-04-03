@@ -80,10 +80,9 @@ router.put('/:id', verifyToken, async(req,res) => {
     let updatedPost = {
       title, 
       description: description || '', 
-      url: (url.startWith('https://') ? url : `https://${url}`) || '',
+      url: (url.startsWith('https://') ? url : `https://${url}`) || '',
       status: status || 'TO LEARN'
     }
-
     const updateCondition = {
       _id: req.params.id,
       user: req.user_id
@@ -105,6 +104,7 @@ router.put('/:id', verifyToken, async(req,res) => {
     })
 
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       success: false,
       message: 'Internal server error'
